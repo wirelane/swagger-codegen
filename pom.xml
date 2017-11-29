@@ -841,6 +841,7 @@
                 <!-- clients -->
                 <module>samples/client/petstore/php/SwaggerClient-php</module>
                 <module>samples/client/petstore/ruby</module>
+                <module>samples/client/petstore/go</module>
                 <module>samples/client/petstore/scala</module>
                 <module>samples/client/petstore/akka-scala</module>
                 <module>samples/client/petstore/javascript</module>
