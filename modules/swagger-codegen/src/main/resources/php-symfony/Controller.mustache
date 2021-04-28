@@ -137,14 +137,11 @@ class Controller
      */
     protected function serialize($data, $format)
     {
-        //Do not try and serialize binary formats
-        if(!in_array($format, $this->binaryFormats)){
-            return $this->serializer->serialize($data, $format);
-        }
-        else{
-            //If binary return is as is
+        if (in_array($format, $this->binaryFormats)) {
             return $data;
         }
+
+        return $this->serializer->serialize($data, $format);
     }
 
     /**
