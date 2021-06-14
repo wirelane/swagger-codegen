@@ -3,8 +3,8 @@
 # Do not edit the class manually.
 
 parameters:
-    {{bundleAlias}}.serializer: '{{servicePackage}}\JmsSerializer'
-    {{bundleAlias}}.validator:  '{{servicePackage}}\SymfonyValidator'
+    {{bundleAlias}}.serializer: '{{servicePackage}}\SerializerInterface'
+    {{bundleAlias}}.validator:  '{{servicePackage}}\ValidatorInterface'
 
 services:
     {{bundleAlias}}.api.api_server:
