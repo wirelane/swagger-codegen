@@ -161,6 +161,10 @@ class {{controllerName}} extends Controller
             $responseHeaders = [];
             $result = $handler->{{operationId}}({{#allParams}}${{paramName}}, {{/allParams}}$responseCode, $responseHeaders);
 
+            if ($result instanceof HttpError) {
+                $responseFormat = 'application/json';
+            }
+
             // Find default response message
             $message = '{{#responses}}{{#isDefault}}{{message}}{{/isDefault}}{{/responses}}';
 
