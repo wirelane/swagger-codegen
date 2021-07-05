@@ -22,14 +22,25 @@ class JmsSerializer implements SerializerInterface
             $builder
                 ->setDeserializationVisitor('json', new StrictJsonDeserializationVisitor($naming_strategy))
                 ->setDeserializationVisitor('xml', new XmlDeserializationVisitor($naming_strategy));
+        } else {
+            // JMS Serializer >=2.x
+            $builder->configureHandlers(
+                function (HandlerRegistry $registry) {
+                    $registry->registerSubscribingHandler(new DateHandler('Y-m-d\TH:i:sO'));
+                    $registry->registerSubscribingHandler(new StdClassHandler());
+                    $registry->registerSubscribingHandler(new ArrayCollectionHandler());
+                    $registry->registerSubscribingHandler(new \JMS\Serializer\Handler\IteratorHandler());
+                }
+            );
         }
 
         $this->serializer = $builder->build();
     }
 
+
     public function serialize($data, $format)
     {
-        return SerializerBuilder::create()->build()->serialize($data, $this->convertFormat($format));
+        return $this->serializer->serialize($data, $this->convertFormat($format));
     }
 
     public function deserialize($data, $type, $format)
