@@ -2,6 +2,10 @@
 
 namespace {{servicePackage}};
 
+use JMS\Serializer\Handler\HandlerRegistryInterface;
+use JMS\Serializer\Handler\DateHandler;
+use JMS\Serializer\Handler\StdClassHandler;
+use JMS\Serializer\Handler\ArrayCollectionHandler;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -25,7 +29,7 @@ class JmsSerializer implements SerializerInterface
         } else {
             // JMS Serializer >=2.x
             $builder->configureHandlers(
-                function (HandlerRegistry $registry) {
+                function (HandlerRegistryInterface $registry) {
                     $registry->registerSubscribingHandler(new DateHandler('Y-m-d\TH:i:sO'));
                     $registry->registerSubscribingHandler(new StdClassHandler());
                     $registry->registerSubscribingHandler(new ArrayCollectionHandler());
