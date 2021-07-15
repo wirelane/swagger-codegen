@@ -33,7 +33,7 @@ class JmsSerializer implements SerializerInterface
                     $registry->registerSubscribingHandler(new DateHandler('Y-m-d\TH:i:sO'));
                     $registry->registerSubscribingHandler(new StdClassHandler());
                     $registry->registerSubscribingHandler(new ArrayCollectionHandler());
-                    if (class_exists('\JMS\Serializer\Handler\IteratorHandler', true)) {
+                    if (class_exists('\JMS\Serializer\Handler\IteratorHandler')) {
                         $registry->registerSubscribingHandler(new \JMS\Serializer\Handler\IteratorHandler());
                     }
                 }
