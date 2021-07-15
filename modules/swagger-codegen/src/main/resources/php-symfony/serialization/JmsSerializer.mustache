@@ -20,25 +20,23 @@ class JmsSerializer implements SerializerInterface
     {
         $builder = SerializerBuilder::create();
 
-        // JMS Serializer <=1.x
-        if (is_callable([JsonDeserializationVisitor::class, 'decode'], true)) {
-            $naming_strategy = new SerializedNameAnnotationStrategy(new CamelCaseNamingStrategy());
-
-            $builder
-                ->setDeserializationVisitor('json', new StrictJsonDeserializationVisitor($naming_strategy))
-                ->setDeserializationVisitor('xml', new XmlDeserializationVisitor($naming_strategy));
-        } else {
+        if(class_exists('\JMS\Serializer\Handler\IteratorHandler')){
             // JMS Serializer >=2.x
             $builder->configureHandlers(
                 function (HandlerRegistryInterface $registry) {
                     $registry->registerSubscribingHandler(new DateHandler('Y-m-d\TH:i:sO'));
                     $registry->registerSubscribingHandler(new StdClassHandler());
                     $registry->registerSubscribingHandler(new ArrayCollectionHandler());
-                    if (class_exists('\JMS\Serializer\Handler\IteratorHandler')) {
-                        $registry->registerSubscribingHandler(new \JMS\Serializer\Handler\IteratorHandler());
-                    }
+                    $registry->registerSubscribingHandler(new \JMS\Serializer\Handler\IteratorHandler());
                 }
             );
+        } else {
+            // JMS Serializer <=1.x
+            $naming_strategy = new SerializedNameAnnotationStrategy(new CamelCaseNamingStrategy());
+
+            $builder
+                ->setDeserializationVisitor('json', new JsonDeserializationVisitor($naming_strategy))
+                ->setDeserializationVisitor('xml', new XmlDeserializationVisitor($naming_strategy));
         }
 
         $this->serializer = $builder->build();
