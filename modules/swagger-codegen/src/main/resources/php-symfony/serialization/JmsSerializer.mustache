@@ -6,7 +6,7 @@ use JMS\Serializer\Handler\HandlerRegistryInterface;
 use JMS\Serializer\Handler\DateHandler;
 use JMS\Serializer\Handler\StdClassHandler;
 use JMS\Serializer\Handler\ArrayCollectionHandler;
-use JMS\Serializer\JsonDeserializationVisitor;
+use JMS\Serializer\StrictJsonDeserializationVisitor;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -32,11 +32,11 @@ class JmsSerializer implements SerializerInterface
             );
         } else {
             // JMS Serializer <=1.x
-            $naming_strategy = new SerializedNameAnnotationStrategy(new CamelCaseNamingStrategy());
+            $namingStrategy = new SerializedNameAnnotationStrategy(new CamelCaseNamingStrategy());
 
             $builder
-                ->setDeserializationVisitor('json', new JsonDeserializationVisitor($naming_strategy))
-                ->setDeserializationVisitor('xml', new XmlDeserializationVisitor($naming_strategy));
+                ->setDeserializationVisitor('json', new StrictJsonDeserializationVisitor($namingStrategy))
+                ->setDeserializationVisitor('xml', new XmlDeserializationVisitor($namingStrategy));
         }
 
         $this->serializer = $builder->build();
